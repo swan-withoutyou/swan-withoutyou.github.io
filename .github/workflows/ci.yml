@@ -4,22 +4,33 @@ on:
   pull_request:
   workflow_dispatch:
 permissions: { contents: read, pages: write, id-token: write }
+concurrency: { group: pages, cancel-in-progress: false }
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      NEXT_PUBLIC_SITE_URL: ${{ vars.SITE_URL || 'https://swan-withoutyou.github.io' }}
+      NEXT_PUBLIC_GA_MEASUREMENT_ID: ${{ vars.GA_MEASUREMENT_ID }}
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
         with: { node-version: 22, cache: npm }
       - run: npm ci
       - run: npm run typecheck
       - run: npm run lint
       - run: npm test
-      - run: npm run build
+      # 1) Test build: uses a fake metrics address that the e2e tests intercept.
+      - name: Build for tests
+        run: npm run build
         env:
-          NEXT_PUBLIC_SITE_URL: ${{ vars.SITE_URL || 'https://swan-withoutyou.github.io' }}
-          NEXT_PUBLIC_GA_MEASUREMENT_ID: ${{ vars.GA_MEASUREMENT_ID }}
+          NEXT_PUBLIC_YOUTUBE_METRICS_URL: https://metrics.example.com/test-metrics/youtube.json
       - run: npx playwright install --with-deps chromium && npm run test:e2e
+      # 2) Real build for the published site: loads live YouTube numbers from the repository.
+      - name: Build for GitHub Pages
+        if: github.ref == 'refs/heads/main'
+        run: rm -rf out .next && npm run build
+        env:
+          NEXT_PUBLIC_YOUTUBE_METRICS_URL: ${{ vars.YOUTUBE_METRICS_URL || format('https://raw.githubusercontent.com/{0}/main/src/data/metrics/youtube.json', github.repository) }}
       - uses: actions/upload-pages-artifact@v3
         if: github.ref == 'refs/heads/main'
         with: { path: out }
