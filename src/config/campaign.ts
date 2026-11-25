@@ -8,7 +8,7 @@
  */
 export const MUSIC_LINKS = {
   officialMV: "https://youtu.be/uTrRuWajO68",
-  itunesPurchase: "#",
+  itunesPurchase: "https://music.apple.com/vn/album/thi%E1%BA%BFu-n%C3%A0ng-single/6836665522",
   massBuyTutorial: "https://www.threads.com/@sapcanhnhathiennga/post/DgHlG-gEmoH",
 } as const;
 

@@ -8,8 +8,8 @@ describe("campaign configuration", () => {
   it("uses the official MV link; iTunes stays '#' until announced", () => {
     expect(MUSIC_LINKS.officialMV).toBe("https://youtu.be/uTrRuWajO68");
     expect(isPlaceholderUrl(MUSIC_LINKS.officialMV)).toBe(false);
-    expect(MUSIC_LINKS.itunesPurchase).toBe("#");
-    expect(isPlaceholderUrl(MUSIC_LINKS.itunesPurchase)).toBe(true);
+    expect(MUSIC_LINKS.itunesPurchase).toMatch(/^https:\/\/music\.apple\.com\//);
+expect(isPlaceholderUrl(MUSIC_LINKS.itunesPurchase)).toBe(false);
   });
 
   it("uses the exact Threads tutorial URL", () => {

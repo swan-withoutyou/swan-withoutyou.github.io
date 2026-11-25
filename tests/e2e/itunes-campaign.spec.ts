@@ -1,7 +1,8 @@
 import { expect, test } from "@playwright/test";
+import { MUSIC_LINKS } from "../../src/config/campaign";
 
 const TUTORIAL = "https://www.threads.com/@sapcanhnhathiennga/post/DgHlG-gEmoH";
-const BUY_MSG = "Đường dẫn mua nhạc chính thức sẽ được cập nhật sớm. Cảm ơn bạn đã chờ đợi và ủng hộ SWAN!";
+//const BUY_MSG = "Đường dẫn mua nhạc chính thức sẽ được cập nhật sớm. Cảm ơn bạn đã chờ đợi và ủng hộ SWAN!";
 
 test.describe("homepage", () => {
   test("release-time block is gone and no countdown exists", async ({ page }) => {
@@ -73,16 +74,17 @@ test.describe("campaign page", () => {
     await expect(page.locator("#mua-itunes h2").first()).toBeInViewport();
   });
 
-  test("iTunes placeholder CTA shows the notice without navigating", async ({ page }) => {
+    test("iTunes CTA opens the official iTunes page in a new tab", async ({ page }) => {
     await page.goto("/top-1-itunes/#mua-itunes");
     const buy = page.getByTestId("itunes-cta");
-    await expect(buy).toHaveText("MUA “THIẾU NÀNG” TRÊN iTUNES");
-    await expect(buy).toHaveAttribute("href", "#");
-    const url = page.url();
-    await buy.click();
-    await expect(page.getByTestId("itunes-cta-notice")).toHaveText(BUY_MSG);
-    expect(page.url()).toBe(url);
-    await expect(buy).toBeInViewport();
+    await buy.scrollIntoViewIfNeeded();
+    await expect(buy).toBeVisible();
+    await expect(buy).toContainText("THIẾU NÀNG");
+    await expect(buy).toHaveAttribute("href", MUSIC_LINKS.itunesPurchase);
+    await expect(buy).toHaveAttribute("href", /^https:\/\/music\.apple\.com\//);
+    await expect(buy).toHaveAttribute("target", "_blank");
+    await expect(buy).toHaveAttribute("rel", "noopener noreferrer");
+    await expect(page.getByTestId("itunes-cta-notice")).toHaveCount(0);
   });
 
   test("FAQ accordion has 7 items that open and close", async ({ page }) => {
