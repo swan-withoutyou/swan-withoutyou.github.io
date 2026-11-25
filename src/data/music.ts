@@ -55,7 +55,15 @@ export const thieuNang: Track = {
     },
   ],
   spotifyTrackUrl: "https://open.spotify.com/artist/0kRs5H8JQHkHMQwBg7BgPv",
-  credits: [],
+  credits: [
+  { role: "Trình bày", name: "SWAN" },
+  { role: "Sáng tác", name: "Dlight" },
+  { role: "Music director", name: "HAROSÉ - SWAN" },
+  { role: "Music producer", name: "Dlight - SWAN" },
+  { role: "Arranger", name: "LV.KhanhHung - Dlight" },
+  { role: "Vocal Producer", name: "HAROSÉ - Dlight - SWAN" },
+  { role: "Recording Engineer", name: "SWAN" },
+],
 };
 
 /** The video to feature: the official MV when configured, otherwise the teaser. */
