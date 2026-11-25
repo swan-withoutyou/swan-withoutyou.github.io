@@ -62,7 +62,7 @@ export const thieuNang: Track = {
   { role: "Music producer", name: "Dlight - SWAN" },
   { role: "Arranger", name: "LV.KhanhHung - Dlight" },
   { role: "Vocal Producer", name: "HAROSÉ - Dlight - SWAN" },
-  { role: "Recording Engineer", name: "SWAN" },
+  { role: "Recording Engineer", name: "SWAN" }, 
 ],
 };
 
