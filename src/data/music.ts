@@ -27,8 +27,15 @@ export const thieuNang: Track = {
   title: "Thiếu Nàng",
   artist: "SWAN",
   label: "SYE Holdings",
-  releaseDate: null,
-  officialMv: null,
+  releaseDate: "20-11-25",
+  officialMv: {
+  youtubeId: "uTrRuWajO68",
+  url: "https://youtu.be/uTrRuWajO68",
+  title: "SWAN - Thiếu Nàng (Music Video)",
+  channel: "SYE Official",
+  role: "official_mv",
+  verifiedAt: "2026-11-25",
+},
   teaser: {
     youtubeId: "B8cb4a-iNco",
     url: "https://www.youtube.com/watch?v=B8cb4a-iNco",
@@ -47,7 +54,7 @@ export const thieuNang: Track = {
       verifiedAt: "2026-11-25",
     },
   ],
-  spotifyTrackUrl: null,
+  spotifyTrackUrl: "https://open.spotify.com/artist/0kRs5H8JQHkHMQwBg7BgPv",
   credits: [],
 };
 

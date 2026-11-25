@@ -7,7 +7,7 @@
  * becomes a normal external link automatically.
  */
 export const MUSIC_LINKS = {
-  officialMV: "#",
+  officialMV: "https://youtu.be/uTrRuWajO68",
   itunesPurchase: "#",
   massBuyTutorial: "https://www.threads.com/@sapcanhnhathiennga/post/DgHlG-gEmoH",
 } as const;

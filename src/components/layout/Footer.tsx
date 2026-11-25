@@ -28,7 +28,9 @@ export function Footer() {
 
         <FooterCol title="Âm nhạc">
           <li><ExternalLink href={socialLinks.spotifyArtist.url} className={linkCls}>Spotify</ExternalLink></li>
-          <li><ExternalLink href={socialLinks.thieuNangTeaser.url} className={linkCls}>YouTube — Video nhá hàng</ExternalLink></li>
+          <li><ExternalLink href={socialLinks.zingMp3.url} className={linkCls}>Zing MP3</ExternalLink></li>
+<li><ExternalLink href={socialLinks.tiktokSound.url} className={linkCls}>TikTok</ExternalLink></li>
+          <li><ExternalLink href={socialLinks.thieuNangMV.url} className={linkCls}>YouTube</ExternalLink></li>
           <li><Link href="/music-video/" className={linkCls}>MV</Link></li>
           <li><Link href="/lyrics/thieu-nang/" className={linkCls}>Lời bài hát</Link></li>
           <li><Link href="/streaming-guide/" className={linkCls}>Hướng dẫn stream</Link></li>

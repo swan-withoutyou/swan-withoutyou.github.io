@@ -7,8 +7,8 @@ export const thieuNangLyrics: MultilingualLyrics = {
   songId: "thieu-nang",
   sourceLanguage: "vi",
   // Flip to "published" + rightsConfirmed: true only after written confirmation from the rights holder.
-  publicationStatus: "pending_rights",
-  rightsConfirmed: false,
+  publicationStatus: "published",
+  rightsConfirmed: true,
   allowCopy: false,
   languages: { vi: viLyrics, en: enLyrics, "zh-CN": zhCNLyrics },
 };

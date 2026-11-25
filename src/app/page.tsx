@@ -146,19 +146,31 @@ export default function HomePage() {
       {/* D — Platforms */}
       <section className="py-16">
         <PageShell>
-          <div className="glass grid gap-6 rounded-[2rem] p-8 sm:grid-cols-2 sm:p-12">
+         <div className="glass grid gap-6 rounded-[2rem] p-8 sm:grid-cols-2 sm:p-12 xl:grid-cols-4">
             <PlatformLink
               href={socialLinks.spotifyArtist.url}
               title={socialLinks.spotifyArtist.label}
-              sub="Hồ sơ nghệ sĩ SWAN trên Spotify"
+              sub="Thiếu Nàng trên Spotify"
               dot="#1ed760"
             />
             <PlatformLink
-              href={socialLinks.thieuNangTeaser.url}
+              href={socialLinks.thieuNangMV.url}
               title="Xem “Thiếu Nàng” trên YouTube"
-              sub={`${thieuNang.teaser?.title} · ${thieuNang.teaser?.channel}`}
+              sub={`${thieuNang.officialMv?.title} · ${thieuNang.officialMv?.channel}`}
               dot="#ff4e45"
             />
+            <PlatformLink
+  href={socialLinks.zingMp3.url}
+  title="Nghe trên Zing MP3"
+  sub="Thiếu Nàng (Single) · SWAN"
+  dot="#8b5cf6"
+/>
+<PlatformLink
+  href={socialLinks.tiktokSound.url}
+  title="Âm thanh trên TikTok"
+  sub="Dùng nhạc Thiếu Nàng cho video của bạn"
+  dot="#25f4ee"
+/>
           </div>
         </PageShell>
       </section>

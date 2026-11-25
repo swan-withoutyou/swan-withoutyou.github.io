@@ -1,0 +1,46 @@
+name: YouTube views (Road to 1M)
+
+on:
+  schedule:
+    - cron: "*/5 * * * *" # every 5 minutes (GitHub may delay scheduled runs by a few minutes)
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+concurrency:
+  group: youtube-metrics
+  cancel-in-progress: false
+
+jobs:
+  record:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          # Branch Netlify deploys / the site reads from. Set repo variable METRICS_BRANCH to override.
+          ref: ${{ vars.METRICS_BRANCH || github.event.repository.default_branch }}
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Read view count
+        env:
+          YOUTUBE_API_KEY: ${{ secrets.YOUTUBE_API_KEY }}
+          YOUTUBE_VIDEO_ID: ${{ vars.YOUTUBE_VIDEO_ID }}
+        run: node --experimental-strip-types scripts/youtube-metrics.ts
+      - name: Commit if changed
+        run: |
+          if git diff --quiet -- src/data/metrics/youtube.json; then
+            echo "No new snapshot."; exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add src/data/metrics/youtube.json
+          # [skip netlify] → Netlify does not rebuild; the site loads this file live instead.
+          git commit -m "chore(metrics): YouTube views $(date -u +%Y-%m-%dT%H:%MZ) [skip netlify]"
+          for i in 1 2 3; do
+            git push && exit 0
+            git pull --rebase
+          done
+          exit 1

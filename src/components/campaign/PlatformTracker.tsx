@@ -6,7 +6,20 @@ import { Button } from "@/components/ui/Button";
 
 const ICON: Record<PlatformCampaign["platform"], string> = { youtube: "#ff4e45", spotify: "#1ed760" };
 
-export function PlatformTracker({ campaign, p, detailed = false }: { campaign: Campaign; p: PlatformCampaign; detailed?: boolean }) {
+const HISTORY_ROWS = 24;
+
+export function PlatformTracker({
+  campaign,
+  p,
+  detailed = false,
+  live = false,
+}: {
+  campaign: Campaign;
+  p: PlatformCampaign;
+  detailed?: boolean;
+  /** True when numbers are refreshed from the auto-updated metrics file. */
+  live?: boolean;
+}) {
   const s = summarize(p);
   const percent = s.state === "recorded" ? s.percent : 0;
   const cta = socialLinks[p.ctaKey];
@@ -58,6 +71,12 @@ export function PlatformTracker({ campaign, p, detailed = false }: { campaign: C
           <Stat label="Còn lại" value={s.state === "recorded" ? formatCompact(s.remaining) : "—"} />
           <Stat label="Cập nhật" value={s.state === "recorded" ? formatDateTime(s.lastUpdated) : "—"} />
         </dl>
+        {p.platform === "youtube" && (
+          <p data-testid="auto-update-note" className="mt-4 flex items-center gap-2 text-xs text-lilac/55">
+            <span aria-hidden className={`size-1.5 rounded-full ${live ? "bg-[#1ed760]" : "bg-lilac/40"}`} />
+            Tự động cập nhật mỗi 5 phút từ YouTube
+          </p>
+        )}
       </div>
 
       {detailed && (
@@ -83,6 +102,9 @@ export function PlatformTracker({ campaign, p, detailed = false }: { campaign: C
           </ol>
 
           <h4 className="mt-10 text-[0.68rem] uppercase tracking-[0.3em] text-soft">Lịch sử cập nhật</h4>
+          {p.history.length > HISTORY_ROWS && (
+            <p className="mt-2 text-xs text-lilac/55">{HISTORY_ROWS} bản ghi gần nhất.</p>
+          )}
           {p.history.length === 0 ? (
             <p className="mt-3 text-sm text-lilac/60">Chưa có bản ghi nào.</p>
           ) : (
@@ -92,7 +114,7 @@ export function PlatformTracker({ campaign, p, detailed = false }: { campaign: C
                   <tr><th className="py-2 font-normal">Thời điểm (GMT+7)</th><th className="py-2 text-right font-normal">{p.unit}</th></tr>
                 </thead>
                 <tbody>
-                  {[...p.history].reverse().map((h) => (
+                  {[...p.history].reverse().slice(0, HISTORY_ROWS).map((h) => (
                     <tr key={h.recordedAt} className="border-t border-lilac/10">
                       <td className="py-2 text-lilac/80">{formatDateTime(h.recordedAt)}</td>
                       <td className="py-2 text-right tabular-nums">{formatNumber(h.value)}</td>

@@ -12,7 +12,7 @@ export type ExternalLink = {
 export const socialLinks = {
   spotifyArtist: {
     url: "https://open.spotify.com/artist/0kRs5H8JQHkHMQwBg7BgPv",
-    label: "Nghe SWAN trên Spotify",
+    label: "Nghe Thiếu Nàng trên Spotify",
   },
   /**
    * Supplied YouTube destination. Verified via YouTube oEmbed (25 Nov 2026):
@@ -29,6 +29,18 @@ export const socialLinks = {
     url: "https://www.youtube.com/watch?v=B8cb4a-iNco",
     label: "Thiếu Nàng — Teaser",
   },
+  thieuNangMV: {
+  url: "https://youtu.be/uTrRuWajO68",
+  label: "Thiếu Nàng — MV chính thức",
+},
+zingMp3: {
+  url: "https://zingmp3.vn/album/Thieu-Nang-Single-SWAN/EqoUxTarZMhe.html",
+  label: "Nghe Thiếu Nàng trên Zing MP3",
+},
+tiktokSound: {
+  url: "https://www.tiktok.com/music/-7709775560291125300",
+  label: "Dùng âm thanh Thiếu Nàng trên TikTok",
+},
   syeHoldings: {
     url: "https://www.syeholdings.co/vi/home",
     label: "SYE Holdings — Công ty chủ quản",
@@ -46,6 +58,7 @@ export const socialLinks = {
     label: "Threads của đội ngũ SWAN",
     note: "Tài khoản của ekip SWAN — không phải tài khoản cá nhân của fan.",
   },
+  
 } as const satisfies Record<string, ExternalLink>;
 
 export type SocialLinkKey = keyof typeof socialLinks;

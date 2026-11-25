@@ -4,12 +4,12 @@ import { roadTo1M } from "@/data/campaign";
 import { formatDateTime } from "@/lib/utils/format";
 import { PageShell } from "@/components/layout/PageShell";
 import { SectionHeading } from "@/components/ui/SectionHeading";
-import { PlatformTracker } from "@/components/campaign/PlatformTracker";
+import { LivePlatformTracker } from "@/components/campaign/LivePlatformTracker";
 import { Notice } from "@/components/ui/Notice";
 
 export const metadata = pageMetadata({
-  title: "Hành trình 1 triệu view",
-  description: "Theo dõi chiến dịch Hành trình 1 triệu cho “Thiếu Nàng”: 1 triệu lượt xem YouTube và 1 triệu lượt nghe Spotify trong 30 ngày.",
+  title: "Hành trình 1 triệu — Thiếu Nàng",
+  description: "Theo dõi chiến dịch Hành trình 1 triệu cho “Thiếu Nàng”: 1 triệu lượt xem MV trên YouTube trong 30 ngày đầu.",
   path: "/road-to-1m/",
 });
 
@@ -18,8 +18,8 @@ export default function RoadTo1MPage() {
     <PageShell className="pt-36">
       <SectionHeading as="h1" eyebrow="Chiến dịch · 30 ngày" title={<>Hành trình <span className="italic text-lilac">1 triệu</span></>}>
         <p>
-          Hai mục tiêu độc lập: 1.000.000 lượt xem MV trên YouTube và 1.000.000 lượt nghe trên Spotify trong 30 ngày đầu. Số
-          liệu được cập nhật thủ công từ nền tảng chính thức, theo giờ Việt Nam (GMT+7).
+          Mục tiêu: 1.000.000 lượt xem MV “Thiếu Nàng” trên YouTube trong 30 ngày đầu. Số liệu được lấy tự động từ YouTube mỗi 5
+          phút, theo giờ Việt Nam (GMT+7).
         </p>
       </SectionHeading>
 
@@ -31,9 +31,9 @@ export default function RoadTo1MPage() {
         </Notice>
       </div>
 
-      <div className="mt-12 grid gap-6 lg:grid-cols-2">
+      <div className="mt-12 grid max-w-3xl gap-6">
         {roadTo1M.platforms.map((p) => (
-          <PlatformTracker key={p.platform} campaign={roadTo1M} p={p} detailed />
+          <LivePlatformTracker key={p.platform} campaign={roadTo1M} p={p} detailed />
         ))}
       </div>
 

@@ -23,7 +23,7 @@ export type PlatformCampaign = {
   windowDays: number;
   milestones: Milestone[];
   history: MetricSnapshot[];
-  ctaKey: "spotifyArtist" | "thieuNangTeaser";
+  ctaKey:   "thieuNangMV";
 };
 
 export type Campaign = {
