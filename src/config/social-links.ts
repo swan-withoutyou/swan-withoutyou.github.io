@@ -1,0 +1,51 @@
+/**
+ * Single source of truth for every external URL on the site.
+ * Never hard-code these URLs in components — import from here.
+ */
+export type ExternalLink = {
+  url: string;
+  label: string;
+  /** What we have actually verified about this destination. */
+  note?: string;
+};
+
+export const socialLinks = {
+  spotifyArtist: {
+    url: "https://open.spotify.com/artist/0kRs5H8JQHkHMQwBg7BgPv",
+    label: "Nghe SWAN trên Spotify",
+  },
+  /**
+   * Supplied YouTube destination. Verified via YouTube oEmbed (25 Nov 2026):
+   * title "SWAN - có lẽ x Prod. Neyun (DRILL VERSION)" by SYE Official.
+   * It is NOT the Thiếu Nàng music video, so it is never labelled as such.
+   */
+  youtubeSupplied: {
+    url: "https://youtu.be/XlhmFJ1ZqxU?si=Kzo0QPp2t39GBmNA",
+    label: "Xem SWAN trên YouTube",
+    note: "có lẽ (Drill Version) — SYE Official",
+  },
+  /** Verified via YouTube oEmbed: "SWAN - Thiếu Nàng [Teaser]" by SYE Official. */
+  thieuNangTeaser: {
+    url: "https://www.youtube.com/watch?v=B8cb4a-iNco",
+    label: "Thiếu Nàng — Teaser",
+  },
+  syeHoldings: {
+    url: "https://www.syeholdings.co/vi/home",
+    label: "SYE Holdings — Công ty chủ quản",
+  },
+  swanArtistProfile: {
+    url: "https://www.syeholdings.co/vi/artists/swan",
+    label: "Hồ sơ nghệ sĩ SWAN",
+  },
+  swanFacebook: {
+    url: "https://www.facebook.com/SWANNguyen.sye",
+    label: "SWAN trên Facebook",
+  },
+  swanTeamThreads: {
+    url: "https://www.threads.com/@doicanhzanzucuaswan",
+    label: "Threads của đội ngũ SWAN",
+    note: "Tài khoản của ekip SWAN — không phải tài khoản cá nhân của fan.",
+  },
+} as const satisfies Record<string, ExternalLink>;
+
+export type SocialLinkKey = keyof typeof socialLinks;
