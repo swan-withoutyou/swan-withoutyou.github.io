@@ -11,7 +11,7 @@ export type ExternalLink = {
 
 export const socialLinks = {
   spotifyArtist: {
-    url: "https://open.spotify.com/artist/0kRs5H8JQHkHMQwBg7BgPv",
+    url: "https://open.spotify.com/track/4piT3QCXKlRnDLvkZ7uRqM",
     label: "Nghe Thiếu Nàng trên Spotify",
   },
   /**

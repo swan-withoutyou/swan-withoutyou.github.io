@@ -54,7 +54,7 @@ export const thieuNang: Track = {
       verifiedAt: "2026-11-25",
     },
   ],
-  spotifyTrackUrl: "https://open.spotify.com/artist/0kRs5H8JQHkHMQwBg7BgPv",
+  spotifyTrackUrl: "https://open.spotify.com/track/4piT3QCXKlRnDLvkZ7uRqM",
   credits: [
   { role: "Trình bày", name: "SWAN" },
   { role: "Sáng tác", name: "Dlight" },
