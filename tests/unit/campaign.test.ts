@@ -14,7 +14,7 @@ describe("Road to 1M", () => {
   expect(roadTo1M.platforms.map((p) => p.platform)).toEqual(["youtube"]);
   expect(roadTo1M.platforms.map((p) => p.target)).toEqual([1_000_000]);
   expect(roadTo1M.platforms[0].milestones.map((m) => [m.target, m.withinHours])).toEqual([
-    [50_000, 2], [100_000, 48], [1_000_000, 720],
+    [50_000, 24], [100_000, 48], [1_000_000, 720],
   ]);
 });
 

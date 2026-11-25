@@ -48,7 +48,7 @@ export default function MusicVideoPage() {
             <div className="mt-8 flex flex-wrap items-start gap-3">
               <OfficialMvCTA />
             {/*video && <Button href={video.url} external variant="ghost">Mở trên YouTube ↗</Button>*/}
-              <Button href={socialLinks.spotifyArtist.url} external variant="spotify">Nghe Thiếu Nàng trên Spotify</Button>
+              <Button href={socialLinks.spotifyArtist.url} external variant="spotify">Nghe trên Spotify</Button>
               <Button href="/lyrics/thieu-nang/" variant="ghost">Lời bài hát →</Button>
             </div>
             <div className="mt-6">

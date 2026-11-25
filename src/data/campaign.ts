@@ -20,11 +20,11 @@ export const roadTo1M: Campaign = {
       target: 1_000_000,
       windowDays: 30,
       ctaKey: "thieuNangMV",
-      milestones: [
-        { id: "yt-1", target: 50_000, withinHours: 2, label: "2 giờ đầu" },
-        { id: "yt-2", target: 100_000, withinHours: 48, label: "48 giờ đầu" },
-        { id: "yt-3", target: 1_000_000, withinHours: 24 * 30, label: "30 ngày đầu" },
-      ],
+     milestones: [
+  { id: "yt-1", target: 50_000, withinHours: 24, label: "1 ngày đầu" },
+  { id: "yt-2", target: 100_000, withinHours: 48, label: "2 ngày đầu" },
+  { id: "yt-3", target: 1_000_000, withinHours: 24 * 30, label: "30 ngày đầu" },
+],
       history: parseMetricsHistory(youtubeMetrics),
     },
   ],
