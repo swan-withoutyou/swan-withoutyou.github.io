@@ -39,6 +39,9 @@ export function LivePlatformTracker({ campaign, p, detailed = false }: { campaig
     };
   }, [enabled]);
 
-  const merged = history && history.length >= p.history.length ? { ...p, history } : p;
-  return <PlatformTracker campaign={campaign} p={merged} detailed={detailed} live={enabled && history !== null} />;
+  // Use the live file when its latest snapshot is at least as recent as the build-time data.
+  const latest = (h: MetricSnapshot[]) => Math.max(-Infinity, ...h.map((x) => Date.parse(x.recordedAt)));
+  const useLive = history !== null && history.length > 0 && latest(history) >= latest(p.history);
+  const merged = useLive ? { ...p, history } : p;
+  return <PlatformTracker campaign={campaign} p={merged} detailed={detailed} live={useLive} />;
 }
