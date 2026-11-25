@@ -18,7 +18,6 @@ export type Track = {
   teaser: VideoAsset | null;
   /** Other supplied SWAN videos — shown as such, never as the Thiếu Nàng MV. */
   otherVideos: VideoAsset[];
-  spotifyTrackUrl: string | null;
   credits: Array<{ role: string; name: string }>;
 };
 
@@ -54,7 +53,6 @@ export const thieuNang: Track = {
       verifiedAt: "2026-11-25",
     },
   ],
-  spotifyArtistUrl: "https://open.spotify.com/track/4piT3QCXKlRnDLvkZ7uRqM",
   credits: [
   { role: "Trình bày", name: "SWAN" },
   { role: "Sáng tác", name: "Dlight" },

@@ -21,10 +21,8 @@ export default function MusicPage() {
         <div className="glass rounded-3xl p-8">
           <p className="text-[0.68rem] uppercase tracking-[0.3em] text-[#7cf0a6]">Spotify</p>
           <p className="mt-3 font-serif text-3xl">{socialLinks.spotifyArtist.label}</p>
-          <p className="mt-2 text-sm text-lilac/65">
-            {thieuNang.spotifyTrackUrl ? "Bài hát đã có trên Spotify." : "Link bài hát sẽ được bổ sung khi phát hành — trong lúc chờ, hãy theo dõi SWAN."}
-          </p>
-          <div className="mt-6"><Button href={thieuNang.spotifyTrackUrl ?? socialLinks.spotifyArtist.url} external variant="spotify">Mở Spotify ↗</Button></div>
+         
+          
         </div>
         <div className="glass rounded-3xl p-8">
           <p className="text-[0.68rem] uppercase tracking-[0.3em] text-[#ff8d87]">YouTube</p>
