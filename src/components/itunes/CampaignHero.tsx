@@ -26,10 +26,10 @@ export function CampaignHero({ thumbnail, onCampaignPage = false }: { thumbnail?
             THIẾU NÀNG <span className="block italic text-lilac"> - ĐƯỜNG ĐẾN TOP 1 iTUNES </span>
           </Heading>
           <p className="mt-6 font-serif text-xl italic text-cloud sm:text-2xl">
-            Mỗi lượt mua là một bước tiến. Cùng đưa "Thiếu Nàng" lên top 1 iTunes - 22:00 ngày 25/11/2026
+            Mỗi lượt mua là một bước tiến. Cùng đưa Thiếu Nàng lên top 1 iTunes - 22:00 ngày 25/11/2026
           </p>
           <p className="mt-4 max-w-xl text-sm leading-relaxed text-lilac/80">
-            Không chỉ nghe, chúng ta còn có thể cùng nhau đưa "Thiếu Nàng" lên vị trí cao nhất trên bảng xếp hạng iTunes. Mỗi lượt
+            Không chỉ nghe, chúng ta còn có thể cùng nhau đưa Thiếu Nàng lên vị trí cao nhất trên bảng xếp hạng iTunes. Mỗi lượt
             mua hợp lệ đều là một sự ủng hộ dành cho âm nhạc của SWAN.
           </p>
           <p className="mt-6 text-xs tracking-[0.3em] text-lilac/70">

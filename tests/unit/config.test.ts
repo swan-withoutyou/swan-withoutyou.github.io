@@ -13,11 +13,12 @@ describe("official links & assets", () => {
     expect(thieuNang.teaser?.youtubeId).not.toBe(thieuNang.otherVideos[0].youtubeId);
   });
 
-  it("never labels an unverified video as the official MV", () => {
-    expect(thieuNang.officialMv).toBeNull();
-    expect(featuredVideo()?.role).toBe("teaser");
-    expect(thieuNang.releaseDate).toBeNull();
-  });
+  it("features the verified official MV and keeps the teaser separate", () => {
+  expect(thieuNang.officialMv?.youtubeId).toBe("uTrRuWajO68");
+  expect(thieuNang.officialMv?.role).toBe("official_mv");
+  expect(featuredVideo()?.youtubeId).toBe("uTrRuWajO68");
+  expect(thieuNang.teaser?.youtubeId).toBe("B8cb4a-iNco");
+});
 
   it("has two valid fansites with no fabricated Messenger invite URLs", () => {
     expect(fansites).toHaveLength(2);

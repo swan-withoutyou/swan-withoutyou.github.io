@@ -25,7 +25,7 @@ export default function FanContentPage() {
           {" "}
           <br />
           <br />
-          Chưa biết cách chạy số cho "Thiếu Nàng" trên Threads? Xem hướng dẫn chi tiết từ 
+          Chưa biết cách chạy số cho Thiếu Nàng trên Threads? Xem hướng dẫn chi tiết từ 
           {" "}<ExternalLink href="https://www.threads.com/@swn.swandata/post/DY7QoFnk74D" className="text-cloud underline decoration-lilac/40 underline-offset-4">
              đây
           </ExternalLink>

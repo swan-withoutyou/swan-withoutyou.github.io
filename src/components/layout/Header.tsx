@@ -4,7 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { campaignNav, navItems } from "@/config/site";
-import { SwanMark } from "@/components/ui/SwanMark";
+//port { SwanMark } from "@/components/ui/SwanMark";
 
 function isActive(pathname: string, href: string) {
   const norm = (p: string) => (p.endsWith("/") ? p : `${p}/`);
@@ -42,6 +42,7 @@ export function Header() {
       </a>
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-5 sm:px-8">
         <Link href="/" className="group flex items-center gap-2.5" onClick={() => setOpen(false)}>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src="/images/swan logo.png" alt=" " className="h-8 w-auto" />
           
         </Link>

@@ -34,8 +34,8 @@ describe("publication gating", () => {
     expect(unavailableReason(l, "zh-CN")).toBe("empty");
   });
 
-  it("ships no lyrics publicly in the current site data", () => {
-    expect(getPublicLyrics(thieuNangLyrics)).toEqual({});
+  it("publishes all three approved languages with the same structure as Vietnamese", () => {
+    expect(Object.keys(getPublicLyrics(thieuNangLyrics)).sort()).toEqual(["en", "vi", "zh-CN"]);
     expect(multilingualLyricsSchema.safeParse(thieuNangLyrics).success).toBe(true);
     expect(validateLyricsStructure(thieuNangLyrics)).toEqual([]);
   });

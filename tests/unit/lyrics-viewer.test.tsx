@@ -59,11 +59,15 @@ describe("LyricsViewer language switching", () => {
     expect(screen.queryByTestId("lyrics-unavailable")).toBeNull();
   });
 
-  it("renders no lyrics text for the real song while rights are pending", () => {
+  it("renders the published lyrics and keeps the same lines when switching language", () => {
     render(<LyricsViewer lyrics={getPublicLyrics(thieuNangLyrics)} reasons={allUnavailableReasons(thieuNangLyrics)} allowCopy={false} />);
-    expect(screen.getByTestId("lyrics-unavailable").dataset.reason).toBe("pending_rights");
-    expect(document.querySelectorAll("[data-line-id]")).toHaveLength(0);
+    expect(screen.queryByTestId("lyrics-unavailable")).toBeNull();
+    const ids = () => Array.from(document.querySelectorAll("[data-line-id]")).map((e) => e.getAttribute("data-line-id"));
+    const vi = ids();
+    expect(vi).toHaveLength(40);
+    fireEvent.click(screen.getByRole("radio", { name: "English" }));
+    expect(ids()).toEqual(vi);
     fireEvent.click(screen.getByRole("radio", { name: "中文" }));
-    expect(screen.getByText("歌词正在等待版权方确认发布")).toBeTruthy();
+    expect(ids()).toEqual(vi);
   });
 });

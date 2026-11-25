@@ -5,10 +5,10 @@ import { campaignNav } from "@/config/site";
 import { isPlaceholderUrl } from "@/lib/links";
 
 describe("campaign configuration", () => {
-  it("keeps the unavailable official links as '#'", () => {
-    expect(MUSIC_LINKS.officialMV).toBe("#");
+  it("uses the official MV link; iTunes stays '#' until announced", () => {
+    expect(MUSIC_LINKS.officialMV).toBe("https://youtu.be/uTrRuWajO68");
+    expect(isPlaceholderUrl(MUSIC_LINKS.officialMV)).toBe(false);
     expect(MUSIC_LINKS.itunesPurchase).toBe("#");
-    expect(isPlaceholderUrl(MUSIC_LINKS.officialMV)).toBe(true);
     expect(isPlaceholderUrl(MUSIC_LINKS.itunesPurchase)).toBe(true);
   });
 

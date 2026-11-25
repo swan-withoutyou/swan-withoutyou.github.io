@@ -10,13 +10,13 @@ describe("Road to 1M", () => {
     expect(summarize(base)).toEqual({ state: "awaiting" });
   });
 
-  it("current site data contains no fabricated metrics", () => {
-    for (const p of roadTo1M.platforms) expect(p.history).toEqual([]);
-    expect(roadTo1M.platforms.map((p) => p.target)).toEqual([1_000_000, 1_000_000]);
-    expect(roadTo1M.platforms[0].milestones.map((m) => [m.target, m.withinHours])).toEqual([
-      [50_000, 2], [100_000, 48], [1_000_000, 720],
-    ]);
-  });
+  it("tracks YouTube only, with the agreed milestones", () => {
+  expect(roadTo1M.platforms.map((p) => p.platform)).toEqual(["youtube"]);
+  expect(roadTo1M.platforms.map((p) => p.target)).toEqual([1_000_000]);
+  expect(roadTo1M.platforms[0].milestones.map((m) => [m.target, m.withinHours])).toEqual([
+    [50_000, 2], [100_000, 48], [1_000_000, 720],
+  ]);
+});
 
   it("summarises from the latest snapshot regardless of insertion order", () => {
     const s = summarize({

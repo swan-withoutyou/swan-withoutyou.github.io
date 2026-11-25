@@ -20,7 +20,7 @@ export default function AboutPage() {
       <SectionHeading as="h1" eyebrow="Giới thiệu" title={<>Về <span className="italic text-lilac">Thiếu Nàng</span></>}>
         <p>
           Đây là trang trải nghiệm âm nhạc dành riêng cho “{thieuNang.title}” của {thieuNang.artist} — nơi MV, lời bài hát ba
-          ngôn ngữ, chiến dịch "Hành trình 1 triệu view" và "Góc của The Wings".
+          ngôn ngữ, chiến dịch Hành trình 1 triệu view và Góc của The Wings.
         </p>
       </SectionHeading>
 
