@@ -21,19 +21,20 @@ test("lyrics language switcher works without reload", async ({ page }) => {
     await expect(page.getByRole("radio", { name }).first()).toHaveAttribute("aria-checked", "true");
   }
   expect(await page.evaluate(() => (window as unknown as { __m: number }).__m)).toBe(marker);
-  await expect(page.getByTestId("lyrics-unavailable").first()).toBeVisible();
+  await expect(page.locator("[data-line-id]").first()).toBeVisible();
 });
 
-test("lyrics page has canonical URL and is noindex until lyrics are published", async ({ page }) => {
+test("lyrics page has canonical URL and is indexable now that lyrics are published", async ({ page }) => {
   await page.goto("/lyrics/thieu-nang/");
   await expect(page.locator('link[rel="canonical"]')).toHaveAttribute("href", /\/lyrics\/thieu-nang\/$/);
-  await expect(page.locator('meta[name="robots"]')).toHaveAttribute("content", /noindex/);
+  await expect(page.locator('meta[name="robots"]')).toHaveCount(0);
 });
 
-test("road to 1M shows awaiting state instead of fabricated numbers", async ({ page }) => {
+test("road to 1M shows only the YouTube tracker, with auto-update note", async ({ page }) => {
   await page.goto("/road-to-1m/");
-  await expect(page.getByTestId("tracker-youtube").getByTestId("awaiting")).toHaveText("Đang chờ cập nhật số liệu đầu tiên");
-  await expect(page.getByTestId("tracker-spotify").getByTestId("awaiting")).toHaveText("Đang chờ cập nhật số liệu đầu tiên");
+  await expect(page.getByTestId("tracker-youtube")).toBeVisible();
+  await expect(page.getByTestId("tracker-spotify")).toHaveCount(0);
+  await expect(page.getByTestId("auto-update-note")).toContainText("mỗi 5 phút");
 });
 
 test("fan community shows two cards with original QR images", async ({ page }) => {
@@ -46,9 +47,9 @@ test("fan community shows two cards with original QR images", async ({ page }) =
   }
 });
 
-test("music video page shows teaser status, not a fabricated official MV", async ({ page }) => {
+test("music video page shows the official MV status", async ({ page }) => {
   await page.goto("/music-video/");
-  await expect(page.getByTestId("video-status")).toContainText("video nhá hàng");
+  await expect(page.getByTestId("video-status")).toContainText("MV chính thức");
 });
 
 test("sitemap and robots exist", async ({ request }) => {

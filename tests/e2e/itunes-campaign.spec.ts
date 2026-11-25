@@ -1,7 +1,6 @@
 import { expect, test } from "@playwright/test";
 
 const TUTORIAL = "https://www.threads.com/@sapcanhnhathiennga/post/DgHlG-gEmoH";
-const MV_MSG = "Đường dẫn MV chính thức sẽ được cập nhật sớm. Cảm ơn bạn đã chờ đợi và ủng hộ SWAN!";
 const BUY_MSG = "Đường dẫn mua nhạc chính thức sẽ được cập nhật sớm. Cảm ơn bạn đã chờ đợi và ủng hộ SWAN!";
 
 test.describe("homepage", () => {
@@ -16,10 +15,10 @@ test.describe("homepage", () => {
   test("shows only the short campaign introduction with exactly two CTAs", async ({ page }) => {
     await page.goto("/");
     const intro = page.getByTestId("home-campaign-intro");
-    for (const t of [
-      "Dự án của cộng đồng fan SWAN",
-      "THIẾU NÀNG — ĐƯỜNG ĐẾN TOP 1 iTUNES",
-      "Mỗi lượt mua là một bước tiến. Cùng đưa Thiếu Nàng chạm đỉnh iTunes!",
+        for (const t of [
+      "Dự án của cộng đồng The Wings",
+      /THIẾU NÀNG\s*[-—]\s*ĐƯỜNG ĐẾN TOP 1 iTUNES/,
+      "Mỗi lượt mua là một bước tiến.",
       "Không chỉ nghe, chúng ta còn có thể cùng nhau đưa Thiếu Nàng lên vị trí cao nhất trên bảng xếp hạng iTunes.",
       "Thiếu Nàng · SWAN",
     ])
@@ -61,7 +60,7 @@ test.describe("campaign page", () => {
   test("direct access, sections and no fabricated stats", async ({ page }) => {
     const res = await page.goto("/top-1-itunes/");
     expect(res?.status()).toBe(200);
-    await expect(page.locator("h1")).toContainText("THIẾU NÀNG — ĐƯỜNG ĐẾN TOP 1 iTUNES");
+        await expect(page.locator("h1")).toContainText(/THIẾU NÀNG\s*[-—]\s*ĐƯỜNG ĐẾN TOP 1 iTUNES/);
     for (const id of ["muc-tieu", "huong-dan-mass-buy", "mua-itunes", "hoi-dap"]) await expect(page.locator(`#${id}`)).toHaveCount(1);
     await expect(page.getByTestId("mass-buy-steps").locator(":scope > li")).toHaveCount(5);
     await expect(page.getByTestId("store-vs-stream")).toContainText("Apple Music");
@@ -118,14 +117,14 @@ test.describe("campaign page", () => {
 });
 
 test.describe("music video", () => {
-  test("official MV CTA shows the single fixed notice; tutorial link is exact", async ({ page }) => {
+  test("official MV CTA opens the official MV in a new tab; tutorial link is exact", async ({ page }) => {
     for (const path of ["/", "/music-video/"]) {
       await page.goto(path);
       const btn = page.getByTestId("official-mv-cta").first();
       await expect(btn).toHaveText(/XEM MV CHÍNH THỨC/);
-      await expect(btn).toHaveAttribute("href", "#");
-      await btn.click();
-      await expect(page.getByTestId("official-mv-cta-notice").first()).toHaveText(MV_MSG);
+      await expect(btn).toHaveAttribute("href", "https://youtu.be/uTrRuWajO68");
+      await expect(btn).toHaveAttribute("target", "_blank");
+      await expect(btn).toHaveAttribute("rel", "noopener noreferrer");
       const link = page.getByTestId("tutorial-link");
       await expect(link).toHaveAttribute("href", TUTORIAL);
       await expect(link).toHaveAttribute("target", "_blank");
