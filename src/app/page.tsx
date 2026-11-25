@@ -150,7 +150,7 @@ export default function HomePage() {
             <PlatformLink
               href={socialLinks.spotifyArtist.url}
               title={socialLinks.spotifyArtist.label}
-              sub="Thiếu Nàng trên Spotify"
+              sub="Nghe Thiếu Nàng trên Spotify"
               dot="#1ed760"
             />
             <PlatformLink
