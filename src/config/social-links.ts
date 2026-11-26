@@ -53,6 +53,10 @@ tiktokSound: {
     url: "https://www.facebook.com/SWANNguyen.sye",
     label: "SWAN trên Facebook",
   },
+  roadTo1MReel: {
+    url: "https://www.facebook.com/reel/1113704614825274",
+    label: "Video trên Facebook",
+  },
   swanTeamThreads: {
     url: "https://www.threads.com/@doicanhzanzucuaswan",
     label: "Threads của đội ngũ SWAN",
