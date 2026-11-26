@@ -1,7 +1,7 @@
 {
   "videoId": "uTrRuWajO68",
   "source": "YouTube Data API v3",
-  "updatedAt": "2026-11-26T21:20:20+07:00",
+  "updatedAt": "2026-11-26T21:25:15+07:00",
   "history": [
     {
       "recordedAt": "2026-11-25T22:44:18+07:00",
@@ -154,6 +154,10 @@
     {
       "recordedAt": "2026-11-26T21:20:20+07:00",
       "value": 30397
+    },
+    {
+      "recordedAt": "2026-11-26T21:25:15+07:00",
+      "value": 30506
     }
   ]
 }
