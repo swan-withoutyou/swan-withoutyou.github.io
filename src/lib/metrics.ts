@@ -29,3 +29,20 @@ export function parseMetricsHistory(raw: unknown): MetricSnapshot[] {
  * When empty, the site only shows the numbers present at build time.
  */
 export const LIVE_METRICS_URL = process.env.NEXT_PUBLIC_YOUTUBE_METRICS_URL ?? "";
+
+/** Response of the Cloudflare Worker relay (worker/youtube-live). */
+export const liveViewsSchema = z.object({
+  videoId: z.string(),
+  viewCount: z.number().int().nonnegative(),
+  fetchedAt: z.iso.datetime({ offset: true }),
+  stale: z.boolean().optional(),
+});
+
+/** A live reading as a display-only snapshot (source "live"; never stored in history). */
+export function parseLiveSnapshot(raw: unknown): MetricSnapshot | null {
+  const r = liveViewsSchema.safeParse(raw);
+  return r.success ? { recordedAt: r.data.fetchedAt, value: r.data.viewCount, source: "live" } : null;
+}
+
+/** URL of the live relay. Empty → no real-time numbers (the 5-minute history is still used). */
+export const LIVE_VIEWS_URL = process.env.NEXT_PUBLIC_YOUTUBE_LIVE_URL ?? "";

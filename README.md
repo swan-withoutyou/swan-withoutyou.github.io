@@ -62,6 +62,8 @@ npm run dev                  # http://localhost:3000
 | `NEXT_PUBLIC_SITE_URL` | build | Canonical URLs, sitemap, OG. **Set to your Netlify/custom domain.** |
 | `NEXT_PUBLIC_GA_MEASUREMENT_ID` | build | GA4 (`G-…`). Empty = off. |
 | `BASE_PATH` | build | Only for GitHub project pages served under `/repo`. |
+| `NEXT_PUBLIC_YOUTUBE_METRICS_URL` | build | Raw GitHub URL of `src/data/metrics/youtube.json` for live Road to 1M numbers. |
+| `YOUTUBE_API_KEY` | GitHub Actions secret | YouTube Data API v3 key for the 5-minute view-count job. |
 | `SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY` | script/CI only | Threads sync writes. **Never** expose to the browser. |
 | `THREADS_ACCESS_TOKEN`, `THREADS_USER_ID` | script/CI only | Threads API. |
 
@@ -121,13 +123,57 @@ When the official MV is published, set `officialMv: { youtubeId, url, title, cha
 
 Originals live in `public/images/fansites/fansite-0{1,2}-messenger-qr.png` and are served unmodified (a unit test checks their checksums). Both currently decode to `q.me-qr.com` redirect links. To replace one, drop the new original file in the same path (and update the checksum in `tests/unit/config.test.ts`). Set `messengerInviteUrl` / `threadsUrl` / `logo` in `src/data/fansites.ts` **only** with URLs supplied by the fansite admins — on mobile the “Join group” button appears once an invite URL exists.
 
-## 15. Updating streaming metrics
+## 15. Road to 1M — automatic YouTube views
 
-Append a snapshot to `history` in `src/data/campaign.ts` (read from YouTube Studio / Spotify for Artists or the public counter):
-```ts
-history: [{ recordedAt: "2026-12-01T22:00:00+07:00", value: 52340, source: "YouTube public counter" }]
+The tracker is **YouTube only**: 1,000,000 views of the official MV in 30 days, counted from 20:00 25/11/2026 GMT+7.
+
+**How it works**
+1. `.github/workflows/youtube-metrics.yml` runs **every 5 minutes**. GitHub can delay scheduled runs by a few minutes.
+2. It runs `scripts/youtube-metrics.ts`. The script reads the public view count of `uTrRuWajO68` from the official **YouTube Data API v3**. If the number changed, it appends `{ recordedAt, value }` to `src/data/metrics/youtube.json`, with `recordedAt` set automatically to the read time in GMT+7.
+3. The workflow commits the file with `[skip netlify]`, so Netlify doesn't rebuild and no build minutes are used.
+4. The website loads that file directly from GitHub when someone opens the page, and again every 5 minutes while it stays open. If the file can't be loaded, the page shows the numbers from the last build.
+
+Snapshots older than 24 hours are thinned to the last one per hour to keep the file small. Milestone checks stay correct.
+
+**One-time setup**
+1. **API key:** in Google Cloud Console, create a project, go to *APIs & Services*, and enable **YouTube Data API v3**. Under *Credentials*, click **Create API key** and restrict the key to "YouTube Data API v3". It's free, and one call every 5 minutes is far below the daily quota.
+2. **GitHub secret:** in the repo, go to Settings → Secrets and variables → Actions → **New repository secret**. Name it `YOUTUBE_API_KEY` and paste the key as the value.
+3. **Branch:** scheduled workflows only run from the repository's **default branch**, and this one commits to the default branch. If Netlify deploys a different branch, add a repository **variable** `METRICS_BRANCH` set to that branch name. The workflow file must still exist on the default branch.
+4. **Netlify:** in Site settings → Environment variables, add
+   `NEXT_PUBLIC_YOUTUBE_METRICS_URL = https://raw.githubusercontent.com/huynhthihan/swan-withoutyou.github.io/<branch>/src/data/metrics/youtube.json`
+   and redeploy once. The repository must be public for this URL to work.
+5. In GitHub's **Actions** tab, open "YouTube views (Road to 1M)" and click **Run workflow** to record the first number right away.
+
+Optional: a repository variable `YOUTUBE_VIDEO_ID` overrides the video ID. GitHub pauses scheduled workflows after 60 days without repository activity; re-enable them in the Actions tab if that happens.
+
+### Real-time view count (Cloudflare Worker relay)
+
+The tracker can also show YouTube's latest public count, refreshed **every minute**, on top of the 5-minute history.
+
 ```
-Set `startsAt` to the official premiere time to activate milestone deadlines. With no snapshots the tracker shows “Awaiting first update” (never 0).
+YouTube Data API ──(max 1×/min)──▶ Cloudflare Worker (shared 60 s cache) ──▶ every visitor's page (polls every 60 s)
+```
+
+- `worker/youtube-live/` contains the Worker (`src/index.js`) and its config (`wrangler.jsonc`, with `"cache": { "enabled": true }`).
+- The Worker asks YouTube at most once a minute and shares that answer with all visitors (about 1,440 YouTube calls/day, whatever the traffic). The API key is a Worker secret and never reaches the browser.
+- The live number is display-only, labelled "Trực tiếp từ YouTube". History and milestones still come from the 5-minute job. If the relay is down, the page shows the recorded data.
+- YouTube itself refreshes its public counter in batches, so the number changes when YouTube updates it, not every second.
+
+**Setup (one time)**
+1. Use a **separate Google Cloud project and API key** for the relay, so live traffic can never use up the quota of the 5-minute recording job. Restrict the key to "YouTube Data API v3".
+2. Create a free Cloudflare account, then in a terminal:
+   ```bash
+   cd worker/youtube-live
+   npx wrangler@latest login
+   npx wrangler@latest secret put YOUTUBE_API_KEY     # paste the relay key
+   npx wrangler@latest deploy
+   ```
+   Wrangler prints the URL, e.g. `https://swan-youtube-live.<your-subdomain>.workers.dev`.
+3. Open that URL in a browser. You should see `{"videoId":"uTrRuWajO68","viewCount":…,"fetchedAt":"…"}`.
+4. GitHub repo → Settings → Secrets and variables → Actions → **Variables** → New variable `YOUTUBE_LIVE_URL` = the Worker URL **with a trailing `/`**.
+5. Push any change (or re-run "CI & GitHub Pages") so the site is rebuilt with the relay address.
+
+To change the video, edit `VIDEO_ID` in `wrangler.jsonc` and deploy again.
 
 ## 16. Threads API
 
@@ -139,7 +185,7 @@ Uses the official Threads Graph API only. Keyword search needs the **`threads_ke
 npm run dev
 npm run typecheck && npm run lint
 npm test                    # Vitest unit + component tests
-npm run build && npm run test:e2e   # Playwright (desktop + mobile) against ./out
+NEXT_PUBLIC_YOUTUBE_METRICS_URL=https://metrics.example.com/test-metrics/youtube.json npm run build && npm run test:e2e   # Playwright (desktop + mobile) against ./out
 # If Playwright can't download its browser: PW_CHROMIUM_PATH=/path/to/chrome npm run test:e2e
 ```
 
@@ -177,7 +223,7 @@ While a link is `#`, its button stays visible and shows a fixed Vietnamese notic
 
 - Authorised Vietnamese lyrics + rights confirmation; approved EN / 中文 translations; timestamps.
 - Official MV URL, release date, Spotify track URL, credits.
-- Streaming snapshots after release.
+- YouTube API key + `NEXT_PUBLIC_YOUTUBE_METRICS_URL` for automatic Road to 1M numbers.
 - Fansite logos, Threads URLs and direct Messenger invite links.
 - Threads API app + `threads_keyword_search` approval (or manual curation).
 - GA4 ID, custom domain.

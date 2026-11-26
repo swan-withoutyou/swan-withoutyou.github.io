@@ -73,3 +73,28 @@ test("rejects malformed live data", async ({ page }) => {
   await expectBuildTimeData(page);
   await expect(page.getByTestId("tracker-youtube")).not.toContainText("-5");
 });
+
+// ---- Real-time relay (Cloudflare Worker). The e2e build points NEXT_PUBLIC_YOUTUBE_LIVE_URL here. ----
+const RELAY = "**/test-live/views*";
+
+test("shows the real-time count from the relay, labelled as live", async ({ page }) => {
+  await page.route(RELAY, (route) =>
+    route.fulfill({
+      json: { videoId: "uTrRuWajO68", viewCount: 431_234, fetchedAt: vnIso(0) },
+      headers: { "access-control-allow-origin": "*" },
+    }),
+  );
+  await page.goto("/road-to-1m/");
+  const t = page.getByTestId("tracker-youtube");
+  await expect(t).toContainText("431.234");
+  await expect(t.getByTestId("auto-update-note")).toContainText("Trực tiếp từ YouTube");
+  // the live reading is display-only: it is not added to the recorded history table
+  await expect(t.locator("tbody", { hasText: "431.234" })).toHaveCount(0);
+});
+
+test("ignores a broken relay response and keeps the recorded data", async ({ page }) => {
+  await page.route(RELAY, (route) => route.fulfill({ json: { viewCount: "lots" } }));
+  await page.goto("/road-to-1m/");
+  await expectBuildTimeData(page);
+  await expect(page.getByTestId("auto-update-note")).toContainText("mỗi 5 phút");
+});

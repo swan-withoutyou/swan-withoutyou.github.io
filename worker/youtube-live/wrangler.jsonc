@@ -1,0 +1,17 @@
+{
+  // Cloudflare Worker that serves the live YouTube view count to the website.
+  // Deploy:  cd worker/youtube-live && npx wrangler@latest deploy
+  "name": "swan-youtube-live",
+  "main": "src/index.js",
+  "compatibility_date": "2026-11-26",
+  "workers_dev": true,
+  // One cached answer shared by all visitors (honours the Cache-Control max-age set by the Worker).
+  "cache": {
+    "enabled": true
+  },
+  "vars": {
+    "VIDEO_ID": "uTrRuWajO68",
+    "CACHE_SECONDS": "60"
+  }
+  // Secret (not stored here):  npx wrangler@latest secret put YOUTUBE_API_KEY
+}

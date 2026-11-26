@@ -24,6 +24,7 @@ jobs:
         run: npm run build
         env:
           NEXT_PUBLIC_YOUTUBE_METRICS_URL: https://metrics.example.com/test-metrics/youtube.json
+          NEXT_PUBLIC_YOUTUBE_LIVE_URL: https://metrics.example.com/test-live/views
       - run: npx playwright install --with-deps chromium && npm run test:e2e
       # 2) Real build for the published site: loads live YouTube numbers from the repository.
       - name: Build for GitHub Pages
@@ -31,6 +32,8 @@ jobs:
         run: rm -rf out .next && npm run build
         env:
           NEXT_PUBLIC_YOUTUBE_METRICS_URL: ${{ vars.YOUTUBE_METRICS_URL || format('https://raw.githubusercontent.com/{0}/main/src/data/metrics/youtube.json', github.repository) }}
+          # Real-time relay (Cloudflare Worker). Set repository variable YOUTUBE_LIVE_URL; empty = 5-minute data only.
+          NEXT_PUBLIC_YOUTUBE_LIVE_URL: ${{ vars.YOUTUBE_LIVE_URL }}
       - uses: actions/upload-pages-artifact@v3
         if: github.ref == 'refs/heads/main'
         with: { path: out }
